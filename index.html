@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Markand 💖</title>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#ffe0ec,#fff5f7);
+    text-align: center;
+    color: #444;
+    overflow-x:hidden;
+}
+
+.section { display: none; }
+.active { display: block; }
+
+.center { margin-top: 150px; }
+
+.title { font-size: 40px; color: #ff4d88; }
+
+.card {
+    background: white;
+    padding: 25px 20px;
+    margin: 30px auto;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: left;
+    line-height: 1.7;
+    font-size: 18px;
+}
+
+/* RESPONSIVE TEXT AND CARD */
+@media screen and (max-width: 600px) {
+    .card { padding: 20px 15px; }
+    .title { font-size: 32px; }
+    .card p { font-size: 16px; }
+    button { padding: 10px 18px; font-size: 16px; }
+}
+
+button {
+    background: #ff66a3;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 5px;
+}
+button:hover { background: #ff3385; }
+
+.pow {
+    position: absolute;
+    font-size: 30px;
+    font-weight: bold;
+    color: red;
+    animation: pop 0.4s ease-out forwards;
+}
+
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1.3); } }
+
+.health-bar {
+    width: 100%;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+.health { height: 15px; width: 100%; background: #ff4d88; transition: width 0.3s; }
+
+#phaser-game { width: 100%; max-width: 400px; height: 600px; margin: 20px auto; }
+</style>
+</head>
+<body>
+
+<!-- START -->
+<div id="start" class="section active center">
+    <h1 class="title">Hey Bestie 😌</h1>
+    <p style="font-size:20px; color:#ff4d88;">A little surprise just for you 💖</p>
+    <button onclick="enterSite()">Enter 💖</button>
+    <canvas id="fallingCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"></canvas>
+</div>
+
+<!-- INTRO -->
+<!-- INTRO -->
+<div id="intro" class="section">
+    <h1 class="title">For Markand 💖</h1>
+    <div class="card" style="background: linear-gradient(145deg, #ffe0ec, #fff0f5); box-shadow: 0 15px 40px rgba(255,77,136,0.3); border:2px solid #ff66a3;">
+        
+        <!-- Image Added Here -->
+        <div style="text-align:center; margin-bottom:20px;">
+            <img src="https://i.pinimg.com/564x/7f/26/e7/7f26e71b2c84e6b16d4f6d3fd8a58bca.jpg"
+                 alt="Intro Aesthetic" 
+                 style="width:90%; max-width:350px; border-radius:15px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
+        </div>
+
+        <p style="font-size:18px; line-height:1.7; color:#333;">
+        Hieee Markand 💙 — one of the most beautiful names one can have ✨<br><br>
+        You manage group chats like a pro 😌 and are the person everyone can reach out to when they feel low 🤍  
+        You are always there for everyone 💖 and I’m so proud to have you as my bestie 🥺<br><br>
+        You are great at games 🎮, very clever, and quick at grasping things ⚡  
+        Amazing at solving programming questions 💻, very witty and funny 😂<br><br>
+        And you even know how to beatbox and play harmonica 🎶  
+        Like how can someone be this talented 😭✨<br><br>
+        Along with all these qualities, you handle all my personalities 😭  
+        Deal with all my tantrums… and STILL choose me as your best friend 💖<br><br>
+        This small surprise is nothing compared to you 🥺  
+        Because your personality is just that amazing ✨<br><br>
+        Also good looking 😌, funny… and yes, sometimes irritating 😂  
+        But that’s completely fine…<br><br>
+        Because at the end of the day…  
+        you are the one I care about the most 💖<br><br>
+        Dekho yeh sb bs aise hi nhi bol rhi hu 😌
+        Now get ready for a little fun challenge… because it’s your turn! 😎
+        </p>
+        <button onclick="goToGame()">Continue ➡️</button>
+    </div>
+</div>
+<style>
+    /* Intro Card Layout */
+    .intro-card {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 15px 40px rgba(255,77,136,0.3);
+        border: 2px solid #ff66a3;
+        border-radius: 20px;
+        background: linear-gradient(145deg, #ffe0ec, #fff0f5);
+    }
+    
+    /* Content inside card */
+    .intro-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Image wrapper */
+    .intro-img-wrapper {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .intro-img {
+        width: 90%;
+        max-width: 350px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    /* Text */
+    .intro-text { font-size: 18px; line-height: 1.7; color: #333; }
+    
+    /* LAPTOP / DESKTOP */
+    @media screen and (min-width: 1024px) {
+        .intro-card { flex-direction: row; padding: 40px; }
+        .intro-content { flex-direction: row; align-items: flex-start; }
+        .intro-img-wrapper { width: 50%; margin-bottom:0; text-align:center; }
+        .intro-img { width: 80%; max-width: none; }
+        .intro-text { width: 50%; padding-left: 30px; font-size: 18px; }
+    }
+    </style>
+
+<!-- GAME -->
+<div id="game" class="section">
+    <h1 class="title">Your Turn 😂</h1>
+    <div class="card">
+        <p>Use this game to take out anger on me whenever I irritate you 😅💖</p>
+      
+    </div>
+
+    <div class="card" style="position:relative;">
+        <input id="hits" type="number" placeholder="Number of punches 😭">
+        <br>
+        <button onclick="startFight()">Attack 😂</button>
+        <p id="result"></p>
+        <div class="health-bar">
+            <div id="health" class="health"></div>
+        </div>
+        <div id="phaser-game"></div>
+        <div style="margin-top:10px;">
+            <button id="nextBtnGame" onclick="showNextSegment()">Next ➡️</button>
+        </div>
+    </div>
+</div>
+
+<!-- BESTIE QUESTION PAGE -->
+<div id="bestie-question" class="section center">
+    <h1 class="title" style="color:#ff3385;">So… tell me 💖</h1>
+    <p style="font-size:20px; color:#444;">Will you still choose me as your bestie?</p>
+    <div style="position: relative; width: 100%; height: 200px;">
+        <button id="yesBtn" style="position:absolute; left:40%; top:50%;">Yes 💖</button>
+        <button id="noBtn" style="position:absolute; left:60%; top:50%;">No 😭</button>
+    </div>
+    <p id="finalResult" style="font-size:20px; color:#ff4d88; margin-top:20px;"></p>
+    <p id="endingMessage" style="font-size:20px; color:#ff66a3; margin-top:20px;"></p>
+</div>
+
+<!-- AUDIO -->
+<audio id="drumSound" src="https://assets.mixkit.co/sfx/preview/mixkit-drum-roll-566.mp3"></audio>
+<audio id="hitSound" src="https://assets.mixkit.co/sfx/preview/mixkit-punch-2051.mp3"></audio>
+<audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e0d6e8b6c.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+<script>
+// ----------------- FALLING PARTICLES -----------------
+const canvas = document.getElementById('fallingCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const particles = [];
+
+function randomInt(min,max){ return Math.floor(Math.random()*(max-min)+min); }
+function createParticle(){
+    const colors = ['#ff4d88','#ff66a3','#ffb6c1','#ff69b4','#ffc0cb'];
+    particles.push({
+        x: Math.random()*canvas.width,
+        y: -10,
+        size: randomInt(10,20),
+        color: colors[randomInt(0,colors.length)],
+        speedY: Math.random()*2+1,
+        speedX: Math.random()*1-0.5,
+        rotation: Math.random()*2*Math.PI,
+        rotationSpeed: Math.random()*0.05-0.025
+    });
+}
+function drawParticles(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let p of particles){
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.moveTo(0,-p.size/2);
+        for(let i=0;i<5;i++){
+            ctx.lineTo(Math.cos((i*2*Math.PI)/5)*p.size/2, Math.sin((i*2*Math.PI)/5)*p.size/2);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+    }
+    for(let i=particles.length-1;i>=0;i--){
+        if(particles[i].y > canvas.height+20) particles.splice(i,1);
+    }
+}
+function animateParticles(){
+    if(Math.random()<0.1) createParticle();
+    drawParticles();
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
+window.addEventListener('resize', ()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+// ----------------- NAVIGATION -----------------
+function playSound(id){ const s=document.getElementById(id); s.currentTime=0; s.play(); }
+function enterSite(){ playSound("drumSound"); setTimeout(()=>{ start.classList.remove("active"); intro.classList.add("active"); document.getElementById("bgMusic").play(); },1200); }
+function goToGame(){ intro.classList.remove("active"); game.classList.add("active"); if(!phaserGame) initPhaser(); }
+let isPlaying = true;
+function toggleMusic(){ const music=document.getElementById("bgMusic"); if(isPlaying){ music.pause(); isPlaying=false; } else { music.play(); isPlaying=true; } }
+
+// ----------------- GAME -----------------
+let phaserGame, sceneRef;
+let player, enemy, hand;
+let hitsToDo=0, currentHit=0, enemyHP=100;
+
+function startFight(){
+    hitsToDo = parseInt(document.getElementById('hits').value);
+    if(!hitsToDo || hitsToDo<=0){ alert("Enter valid hits 😏"); return; }
+    currentHit=0;
+    enemyHP = 100;
+    drawHealth();
+    document.getElementById('result').innerText="";
+    punchNext();
+}
+
+function initPhaser(){
+    const config = { type: Phaser.AUTO, width: 400, height: 600, backgroundColor: 0xfff5f7, parent: 'phaser-game', scene: { preload, create, update } };
+    phaserGame = new Phaser.Game(config);
+}
+
+function preload(){}
+function create(){ sceneRef = this; drawHealth(); showChibis(); }
+function update(){}
+
+function showChibis(){
+    if(player && enemy) return;
+    player = createChibi(sceneRef, 120, 400, 0x87cefa, 0xffccaa, "Markand");
+    enemy = createChibi(sceneRef, 280, 400, 0xff69b4, 0xffdd99, "Lavanya");
+    hand = sceneRef.add.rectangle(player.x+25, player.y-20, 10,10,0xffd700).setOrigin(0.5,0.5);
+}
+
+function createChibi(scene,x,y,bodyColor,headColor,name){
+    const container = scene.add.container(x,y);
+    const body = scene.add.ellipse(0,0,50,60,bodyColor);
+    const head = scene.add.circle(0,-50,25,headColor);
+    const eyeL = scene.add.circle(-10,-55,5,0x000000);
+    const eyeR = scene.add.circle(10,-55,5,0x000000);
+    const smile = scene.add.arc(0,-45,10,0,Math.PI,false,0xff0000);
+    const legL = scene.add.rectangle(-15,30,10,25,bodyColor);
+    const legR = scene.add.rectangle(15,30,10,25,bodyColor);
+    const handL = scene.add.rectangle(-35,-10,10,25,bodyColor);
+    const handR = scene.add.rectangle(35,-10,10,25,bodyColor);
+    const text = scene.add.text(0,-90,name,{ font: "16px Arial", color:"#444"}).setOrigin(0.5);
+    container.add([body,head,eyeL,eyeR,smile,legL,legR,handL,handR,text]);
+    container.head = head;
+    return container;
+}
+
+function drawHealth(){ document.getElementById('health').style.width = enemyHP + "%"; }
+
+function punchNext(){
+    if(currentHit >= hitsToDo){
+        const result = document.getElementById('result');
+        if(hitsToDo < 5) result.innerText = "That was cute 😂💖";
+        else if(hitsToDo < 15) result.innerText = "Okay 😭 I deserved that";
+        else result.innerText = "BROOO 😭💀 still your bestie 💖";
+        setTimeout(()=>{ enemyHP = 100; drawHealth(); result.innerText = ""; }, 500);
+        return;
+    }
+    currentHit++;
+    playSound("hitSound");
+    const hpLoss = 100 / hitsToDo;
+    enemyHP -= hpLoss;
+    if(enemyHP<0) enemyHP=0;
+    drawHealth();
+
+    sceneRef.tweens.add({
+        targets: hand,
+        x: enemy.x-20,
+        y: enemy.y-30,
+        rotation: Phaser.Math.DegToRad(-30),
+        duration: 300,
+        yoyo:true,
+        ease: 'Sine.easeInOut',
+        onYoyo:()=>{
+            sceneRef.tweens.add({
+                targets: enemy.head,
+                y: enemy.head.y-10,
+                duration:50,
+                yoyo:true,
+                repeat:2
+            });
+            const pow = document.createElement('div');
+            pow.className="pow";
+            pow.innerText="POW!";
+            pow.style.left=(enemy.x+100)+"px";
+            pow.style.top=(enemy.y-80)+"px";
+            document.body.appendChild(pow);
+            setTimeout(()=>pow.remove(),400);
+        },
+        onComplete:()=>{ setTimeout(()=>punchNext(),200); }
+    });
+}
+
+// ---------------- NEXT SEGMENT BUTTON ----------------
+function showNextSegment(){
+    document.getElementById('game').classList.remove('active');
+    document.getElementById('bestie-question').classList.add('active');
+}
+
+// ---------------- YES / NO BUTTONS ----------------
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const finalResult = document.getElementById('finalResult');
+const endingMessage = document.getElementById('endingMessage');
+
+noBtn.addEventListener('mouseenter', () => {
+    const parent = noBtn.parentElement;
+    const maxX = parent.offsetWidth - noBtn.offsetWidth;
+    const maxY = parent.offsetHeight - noBtn.offsetHeight;
+    const randX = Math.random() * maxX;
+    const randY = Math.random() * maxY;
+    noBtn.style.left = randX + 'px';
+    noBtn.style.top = randY + 'px';
+});
+
+yesBtn.addEventListener('click', ()=>{
+    finalResult.innerText = "I knew it! You will always choose me 😎💖";
+    setTimeout(()=>{ endingMessage.innerText = "This is it for this surprise 💖✨"; }, 800);
+});
+</script>
+</body>
+</html>
